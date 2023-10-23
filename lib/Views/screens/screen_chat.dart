@@ -10,7 +10,6 @@ import 'package:mondaytest/helper/constants.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../Models/Student.dart';
-import '../../controller/RegistrationController.dart';
 
 class ScreenChat extends StatelessWidget {
   Student receiver;
@@ -84,7 +83,6 @@ class ScreenChat extends StatelessWidget {
                                 itemCount: messages.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   var message = messages[index];
-
                                   return Align(
                                     alignment:
                                         message.sender_id == currentUser!.uid

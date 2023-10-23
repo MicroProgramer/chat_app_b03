@@ -13,7 +13,6 @@ import '../Models/message_model.dart';
 import '../helper/Fcm.dart';
 
 class ChatController extends GetxController {
-
   var isEmojiVisible = false.obs;
   FocusNode focusNode = FocusNode();
   var textEditingController = TextEditingController();
@@ -45,11 +44,12 @@ class ChatController extends GetxController {
 
   void startReceiverStream() {
     usersRef.doc(receiver_id).snapshots().listen((event) {
-      receiverObservable.value = Student.fromMap(event.data() as Map<String, dynamic>);
+      receiverObservable.value =
+          Student.fromMap(event.data() as Map<String, dynamic>);
     });
   }
 
-  void startOnlineStatusStream () {
+  void startOnlineStatusStream() {
     Timer.periodic(Duration(seconds: 1), (timer) {
       update();
     });
@@ -72,18 +72,17 @@ class ChatController extends GetxController {
           sender_id: currentUser!.uid,
           timestamp: timestamp,
           receiver_id: receiver_id,
-          message_type: type
-      );
+          message_type: type);
 
       var roomPath = chatsRef.child(getRoomId(receiver_id, currentUser!.uid));
 
-      roomPath.update({
-        'lastMessage': jsonEncode(message.toMap())
-      });
-      roomPath.child("messages").child(timestamp.toString()).set(message.toMap());
+      roomPath.update({'lastMessage': jsonEncode(message.toMap())});
+      roomPath
+          .child("messages")
+          .child(timestamp.toString())
+          .set(message.toMap());
       textEditingController.clear();
     }
-
   }
 
   String getRoomId(String user1, String user2) {
@@ -95,9 +94,12 @@ class ChatController extends GetxController {
 
   void pickImage() async {
     var pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null){
+    if (pickedFile != null) {
       var file = File(pickedFile.path);
-      var url = await FirebaseStorageUtils.uploadImage(file, 'chats/${getRoomId(receiver_id, currentUser!.uid)}', DateTime.now().millisecondsSinceEpoch.toString());
+      var url = await FirebaseStorageUtils.uploadImage(
+          file,
+          'chats/${getRoomId(receiver_id, currentUser!.uid)}',
+          DateTime.now().millisecondsSinceEpoch.toString());
       sendMessage(url, type: 'image');
     }
   }
